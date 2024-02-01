@@ -1,0 +1,306 @@
+{
+	"info": {
+		"_postman_id": "6e500893-1336-49b4-a242-2c6dd87e47ef",
+		"name": "E Commerce Demo Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4849112"
+	},
+	"item": [
+		{
+			"name": "health",
+			"item": [
+				{
+					"name": "Health check",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "origin",
+								"value": "http://localhost:3001",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Customer register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "origin",
+								"value": "http://localhost:3001",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test\",\n    \"email\": \"t1@tt.com\",\n    \"dateOfBirth\": \"2019-12-25\",\n    \"password\": \"Test@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customer login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "origin",
+								"value": "http://localhost:3001",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"t1@tt.com\",\n    \"password\": \"Test@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customer auth validation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "origin",
+								"value": "http://localhost:3001",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@tt.com\",\n    \"otp\": 471577\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/v1/auth/validation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"v1",
+								"auth",
+								"validation"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "shopping preference",
+			"item": [
+				{
+					"name": "Add to customer's shopping preference list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiVTJGc2RHVmtYMThoN2VkU1MyL20xUHRVRDlES1pJbHZHT3UxSnhCdzc1dEFXWVZ4UDhKOXlmMmh3UTcvWmgveFBwd0dRaUNiTEovOW1PQUR0a1ErN0dTTWRacHlITDFnMVNtTkFMUlRLdHFobjZHUmlkQ0Q4WTVoM0J4YjI2K08iLCJpYXQiOjE3MDY3MzY5MDAsImV4cCI6MTcwNjczNzgwMH0.mj24ByzqQc7ZMvuRGiyx_EeyIwC1Y0qb7LY8jyhaO0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "origin",
+								"value": "http://localhost:3001",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prefId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/v1/shopping-preference",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"v1",
+								"shopping-preference"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete shopping preference from the list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiVTJGc2RHVmtYMThoN2VkU1MyL20xUHRVRDlES1pJbHZHT3UxSnhCdzc1dEFXWVZ4UDhKOXlmMmh3UTcvWmgveFBwd0dRaUNiTEovOW1PQUR0a1ErN0dTTWRacHlITDFnMVNtTkFMUlRLdHFobjZHUmlkQ0Q4WTVoM0J4YjI2K08iLCJpYXQiOjE3MDY3MzY5MDAsImV4cCI6MTcwNjczNzgwMH0.mj24ByzqQc7ZMvuRGiyx_EeyIwC1Y0qb7LY8jyhaO0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "origin",
+								"value": "http://localhost:3001",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prefId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/v1/shopping-preference",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"v1",
+								"shopping-preference"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get customer's shopping preferences paginated",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiVTJGc2RHVmtYMTl5TFIreDgvS1FMSmpQYXRLcEdnUWNDaVFiNjFOcGlMMzZ6bU5xaGZzQjZzNURvZlF5R1ZsQ3lVaWZOQkJJQ3V6VWJVeHFTc2NUeTdxN3I4MU4yamJHTDBEMWg0NE0yTjJjb0RVZEZVM1lLcUprOWdocStvMEMiLCJpYXQiOjE3MDY3MzgwMTUsImV4cCI6MTcwNjczODkxNX0.K9eG9rfXtn3IC-LNbVEtlNn-WLG26OJB2xnMLmdQ3j8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "origin",
+								"value": "http://localhost:3001",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prefId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/v1/shopping-preference?limit=10&skip=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"v1",
+								"shopping-preference"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "jsx": "react",
+      "paths": {
+        "@cp-asset/*": ["./src/assets/*"],
+        "@cp-bootstrap/*": ["./src/bootstrap/*"],
+        "@cp-component": ["src/component/index"],
+        "@cp-config/*": ["src/config/*"],
+        "@cp-module/*": ["src/module/*"],
+        "@cp-module-auth*": ["./src/module/auth/*"],
+        "@cp-style/*": ["./src/style/*"],
+        "@cp-util/*": ["./src/util/*"]
+      },
+      "allowSyntheticDefaultImports": true
+    },
+    "exclude": ["node_modules"]
+  }
