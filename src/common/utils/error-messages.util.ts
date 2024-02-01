@@ -34,12 +34,13 @@ export const GENERAL_ERROR_CODES = {
  */
 export const USER_AUTH_MODULE = {
   ERROR_MESSAGE: {
-    USER_NOT_FOUND: 'User not found or OTP not valid',
+    USER_NOT_FOUND: 'User not found, OTP not valid or account is already activated',
     USER_NOT_FOUND2: 'User not found',
     USER_CREDS_ISSUE: 'Invalid Credentials',
     USER_AUTH_FAILED: 'Unauthorized',
     USER_EXISTS: 'User already exists!',
     USER_NOT_ACTIVE: 'Please activate your account',
+    ACTIVITY_FAILED: 'Something went wrong!',
   }
 };
 
@@ -54,5 +55,6 @@ export const SHOPPING_PREF_MODULE = {
     SHOPPING_PREF_NA: 'Selected shopping preference is not available',
     SHOPPING_PREF_EXIST: 'Selected shopping preference is already added to your list',
     SHOPPING_PREF_NOT_EXIST: 'Selected shopping preference is not available in your list',
+    ACTIVITY_FAILED: 'Something went wrong!',
   },
 };

@@ -11,6 +11,7 @@
  * Date      	By	Comments
  * ----------	---	---------------------------------------------------------
  *  02 01 2024   MJ  initial version
+ *  02 01 2024   MJ  Added interfaces to promises 
  */
 
 import {
@@ -46,7 +47,7 @@ export class ShoppingPreferenceController {
   async addPreferenceToUser(
     @Body() addShoppingPrefData: AddShoppingPrefDto,
     @GetCurrentCustomerId() userId: number,
-  ) {
+  ): Promise<ShoppingPrefAddResp> {
     return await this.shoppingPreferenceService.addPreferenceToUser(addShoppingPrefData, userId);
   }
 
@@ -58,7 +59,7 @@ export class ShoppingPreferenceController {
   async removePreferenceFromUser(
     @Body() addShoppingPrefData: AddShoppingPrefDto,
     @GetCurrentCustomerId() userId: number,
-  ) {
+  ): Promise<ShoppingPrefRemoveResp> {
     return await this.shoppingPreferenceService.removePreferenceFromUser(addShoppingPrefData, userId);
   }
 
@@ -70,16 +71,12 @@ export class ShoppingPreferenceController {
   async getCompanyPpRecords(
     @GetCurrentCustomerId() userId: number,
     @Query() { skip, limit }: GetShoppingPreferenceDto
-  ) {
-    try {
-      return await this.shoppingPreferenceService.getUsersPreferenceList(
-        userId,
-        Number(limit),
-        Number(skip),
-      );
-    } catch (error) {
-      throw error;
-    }
+  ): Promise<ShoppingPrefListResp> {
+    return await this.shoppingPreferenceService.getUsersPreferenceList(
+      userId,
+      Number(limit),
+      Number(skip),
+    );
   }
 
 }

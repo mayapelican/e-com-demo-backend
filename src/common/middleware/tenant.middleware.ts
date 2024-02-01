@@ -31,10 +31,7 @@ export class TenantMiddleware implements NestMiddleware {
         const origin = req.headers.origin;
         const referer = req.headers.referer;
         
-        const allowDomains = [  
-            'http://localhost:3000',
-            'http://localhost:3001',
-        ];
+        const allowDomains = process.env.ALLOWED_DOMAINS;
         if (origin) {
             if (allowDomains.includes(origin)) {
                 next();

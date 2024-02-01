@@ -11,6 +11,8 @@
  * Date      	By	Comments
  * ----------	---	---------------------------------------------------------
  *  02 01 2024   MJ  initial version
+ *  02 01 2024   MJ  Error handling added
+ *  
  */
 
 
@@ -49,12 +51,11 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userService: Repository<User>,
     private jwtService: JwtService
-  ) {
+  ) { }
 
-  }
-
-  async registration(customerRegData: CustomerRegDto): Promise<any> {
+  async registration(customerRegData: CustomerRegDto): Promise<UserRegResp> {
     const { name, email, dateOfBirth, password } = customerRegData;
+
 
     // check uniqueness of the email
     let user = await this.userService.findOne({
@@ -65,24 +66,41 @@ export class AuthService {
         `${USER_AUTH_MODULE.ERROR_MESSAGE.USER_EXISTS}`,
       ]);
 
-    let newOtp = generateOTP(6);
+    try {
+      let newOtp = generateOTP(6);
 
-    let newUser = new User();
-    newUser.name = name;
-    newUser.email = email;
-    newUser.dob = dateOfBirth;
-    newUser.password = await argon2.hash(password);
-    newUser.isActive = false;
-    newUser.otp = newOtp;
+      let newUser = new User();
+      newUser.name = name;
+      newUser.email = email;
+      newUser.dob = dateOfBirth;
+      newUser.password = await argon2.hash(password);
+      newUser.isActive = false;
+      newUser.otp = newOtp;
 
-    // TODO: need to send a email with the generated OTP
+      // TODO: need to send a email with the generated OTP
 
-    return await this.userService.save(newUser);
+      return await this.extractLimitedUserDataRegResp(await this.userService.save(newUser));
+    } catch (error) {
+      exceptionHandler(HttpStatus.BAD_REQUEST, [
+        `${USER_AUTH_MODULE.ERROR_MESSAGE.ACTIVITY_FAILED}`,
+      ], error);
+    }
+  }
+
+  async extractLimitedUserDataRegResp(user: any): Promise<UserRegResp> {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      dob: user.dob,
+      isActive: user.isActive,
+      otp: user.otp,
+    };
   }
 
   // TODO: need to implement a new api endpoint and function to re-request the OTP
 
-  async login(customerLoginData: CustomerLoginDto): Promise<any> {
+  async login(customerLoginData: CustomerLoginDto): Promise<UserPayload> {
     let user: User = await this.userService.findOne({
       where: { email: customerLoginData.email },
     });
@@ -103,11 +121,16 @@ export class AuthService {
         `${USER_AUTH_MODULE.ERROR_MESSAGE.USER_NOT_ACTIVE}`,
       ]);
 
-    return this.generateAuthToken(user);
+    try {
+      return this.generateAuthToken(user);
+    } catch (error) {
+      exceptionHandler(HttpStatus.BAD_REQUEST, [
+        `${USER_AUTH_MODULE.ERROR_MESSAGE.ACTIVITY_FAILED}`,
+      ], error);
+    }
   }
 
-  async validation(customerValidationData: CustomerValidationDto): Promise<any> {
-
+  async validation(customerValidationData: CustomerValidationDto): Promise<UserRegResp> {
     // check email with otp
     let user = new User();
     user = await this.userService.findOne({
@@ -119,13 +142,19 @@ export class AuthService {
         `${USER_AUTH_MODULE.ERROR_MESSAGE.USER_NOT_FOUND}`,
       ]);
 
-    user.isActive = true;
-    user.otp = 0;
+    try {
+      user.isActive = true;
+      user.otp = 0;
 
-    return await this.userService.save(user);
+      return await this.extractLimitedUserDataRegResp(await this.userService.save(user));
+    } catch (error) {
+      exceptionHandler(HttpStatus.BAD_REQUEST, [
+        `${USER_AUTH_MODULE.ERROR_MESSAGE.ACTIVITY_FAILED}`,
+      ], error);
+    }
   }
 
-  async generateAuthToken(user: User) {
+  async generateAuthToken(user: User): Promise<any> {
     const tokens = await this.getTokens(
       user.id,
       user.email,
@@ -191,7 +220,6 @@ export class AuthService {
   }
 
   async refreshToken(userId: number, refreshTokenData: RefreshTokenDto): Promise<Tokens> {
-
     const payload = extractPayloadFromToken(refreshTokenData.refreshToken, REF_KEY_LABEL, refreshTokenData.exp)
     if (payload.sub !== userId) {
       exceptionHandler(HttpStatus.BAD_REQUEST, [
@@ -207,15 +235,21 @@ export class AuthService {
         `${USER_AUTH_MODULE.ERROR_MESSAGE.USER_AUTH_FAILED}`,
       ]);
 
-    const tokens = await this.getTokens(
-      user.id,
-      user.email,
-      user.name
-    );
+    try {
+      const tokens = await this.getTokens(
+        user.id,
+        user.email,
+        user.name
+      );
 
-    this.storeRefreshToken(Role.CUSTOMER, user.id, tokens.refresh_token);
+      this.storeRefreshToken(Role.CUSTOMER, user.id, tokens.refresh_token);
 
-    return tokens;
+      return tokens;
+    } catch (error) {
+      exceptionHandler(HttpStatus.BAD_REQUEST, [
+        `${USER_AUTH_MODULE.ERROR_MESSAGE.ACTIVITY_FAILED}`,
+      ], error);
+    }
   }
 
   async logout(userId: number) {

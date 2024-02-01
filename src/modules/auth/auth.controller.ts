@@ -11,6 +11,7 @@
  * Date      	By	Comments
  * ----------	---	---------------------------------------------------------
  *  02 01 2024   MJ  initial version
+ *  02 01 2024   MJ  Added interfaces to promises 
  */
 
 import { Body, Controller, Post, UseGuards, Version } from '@nestjs/common';
@@ -30,13 +31,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   //Ecom Customer Auth
-
   @Version('1')
   @Post('register')
   registration(
     @Body() customerRegData: CustomerRegDto
-  ): Promise<any> {
-
+  ): Promise<UserRegResp> {
     return this.authService.registration(customerRegData);
   }
 
@@ -44,7 +43,7 @@ export class AuthController {
   @Post('login')
   login(
     @Body() customerLoginData: CustomerLoginDto
-  ): Promise<any> {
+  ): Promise<UserPayload> {
     return this.authService.login(customerLoginData);
   }
 
@@ -52,7 +51,7 @@ export class AuthController {
   @Post('validation')
   validation(
     @Body() customerValidationData: CustomerValidationDto
-  ): Promise<any> {
+  ): Promise<UserRegResp> {
     return this.authService.validation(customerValidationData);
   }
 
